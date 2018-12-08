@@ -55,76 +55,161 @@ for row in pivot_df.iterrows():
     zlist.append(data.tolist())
 
 #pivot_temps
-zlist_temps = []
-for row in pivot_data_temperatures.iterrows():
-    index, data4 = row
-    zlist_temps.append(data4.tolist())
-z_temps=[]
-for i in range(0, len(zlist_temps)):
-    z_temps.append(np.mean(zlist_temps[i]))
+def pivot_temperatures():
+    zlist_temps = []
+    for row in pivot_data_temperatures.iterrows():
+        index, data4 = row
+        zlist_temps.append(data4.tolist())
+    z_temps=[]
+    for i in range(0, len(zlist_temps)):
+        z_temps.append(np.mean(zlist_temps[i]))
+    return z_temps
+
+z_temps = pivot_temperatures()
 
 #pivot_precip
-zlist_prec = []
-for row in pivot_data_precipitation.iterrows():
-    index, data5 = row
-    zlist_prec.append(data5.tolist())  
-z_prec=[]
-for i in range(0, len(zlist_prec)):
-    z_prec.append(np.sum(zlist_prec[i]))
+def pivot_precipitation():
+    zlist_prec = []
+    for row in pivot_data_precipitation.iterrows():
+        index, data5 = row
+        zlist_prec.append(data5.tolist())  
+    z_prec=[]
+    for i in range(0, len(zlist_prec)):
+        z_prec.append(np.sum(zlist_prec[i]))
+    return z_prec
 
+z_prec = pivot_precipitation()
 
 
 app.layout = html.Div([
     html.Div([
         dcc.Markdown(
             '''
-            ### something
+            ### A simple 3-D analysis of pedestrian traffic on Brooklyn Bridge.
             '''.replace('  ', ''),
             className='eight columns offset-by-two'
         )
     ],
-    className='row',
-    style={'text-align': 'center', 'margin-bottom': '15px'}
+    className='row'
     ),
-    html.Div([
-        html.Div([
-            dcc.Slider(
-                min=0,
-                max=5,
-                value=0,
-                marks={i: ''.format(i + 1) for i in range(6)},
-                id='slider',
-            ),
-        ],
-        className='row',
-        style={'margin-bottom': '10px'}
-        ),
-        html.Div([
+    dcc.Tabs(id="tabs", children=[
+        dcc.Tab(label='Tab one', children=[
             html.Div([
-                html.Button('Back', id='back', style={
-                            'display': 'inline-block'}),
-                html.Button('Next', id='next', style={
-                            'display': 'inline-block'})
+                dcc.Markdown(
+                    '''
+                    ### Title
+                    '''.replace('  ', ''),
+                    className='eight columns offset-by-two'
+                )
             ],
-            className='two columns offset-by-two'
+            className='row',
+            style={'text-align': 'center', 'margin-bottom': '15px',
+                'margin-top': '20px'}
             ),
-            dcc.Markdown(
-                id='text',
-                className='six columns'
+            html.Div([
+                html.Div([
+                    dcc.Slider(
+                        min=0,
+                        max=5,
+                        value=0,
+                        marks={i: ''.format(i + 1) for i in range(6)},
+                        id='slider',
+                        included=False,
+                        className='one column offset-by-five'
+                    ),
+                ],
+                className='row',
+                style={'margin-bottom': '10px'}
+                ),
+                html.Div([
+                    html.Div([
+                        html.Button('Back', id='back', style={
+                                    'display': 'inline-block'}),
+                        html.Button('Next', id='next', style={
+                                    'display': 'inline-block'})
+                    ],
+                    className='two columns offset-by-five'
+                    ),
+                    dcc.Markdown(
+                        id='text',
+                        className='six columns'
+                    ),
+                ],
+                className='row',
+                style={'margin-bottom': '10px'}
+                ),
+                dcc.Graph(
+                    id='graph',
+                    style={'height': 800}
+                ),
+            ],
+            id='ten columns offset-by-one'
             ),
-        ],
-        className='row',
-        style={'margin-bottom': '10px'}
-        ),
-        dcc.Graph(
-            id='graph',
-            style={'height': 700}
-        ),
-    ],
-    id='page'
-    ),
+        ]),
+        dcc.Tab(label='Tab two', children=[
+            html.Div([
+                dcc.Markdown(
+                    '''
+                    ### Title
+                    '''.replace('  ', ''),
+                    className='eight columns offset-by-two'
+                )
+            ],
+            className='row',
+            style={'text-align': 'center', 'margin-bottom': '15px',
+                'margin-top': '20px'}
+            ),
+            html.Div([
+                html.Div([
+                    dcc.Dropdown(
+                        id='month-picker',
+                        options=[
+                            {'label': "Oct '17", 'value': 'oct'},
+                            {'label': "Nov '17", 'value': 'nov'},
+                            {'label': "Dec '17", 'value': 'dec'},
+                            {'label': "Jan '18", 'value': 'jan'},
+                            {'label': "Feb '18", 'value': 'feb'},
+                            {'label': "Mar '18", 'value': 'mar'},
+                            {'label': "Apr '18", 'value': 'apr'},
+                            {'label': "May '18", 'value': 'may'},
+                            {'label': "Jun '18", 'value': 'jun'},
+                            {'label': "Jul '18", 'value': 'jul'},
+                        ],
+                        value='oct',
+                        multi=True,
+                        className='two columns', 
+                    ),
+                    dcc.Graph(
+                        id='example-graph-1',
+                        figure={
+                            'data': [
+                                {'x': [1, 2, 3], 'y': [1, 4, 1],
+                                    'type': 'bar', 'name': 'SF'},
+                                {'x': [1, 2, 3], 'y': [1, 2, 3],
+                                    'type': 'bar', 'name': u'Montréal'},
+                            ]
+                        },
+                        className='six columns',
+                    ),
+                    dcc.Graph(
+                        id='radar-chart',
+                        className='six columns offset-by-six'
+                    ),
+                ],
+                className='row'
+                )
+            ]),
+            html.Div([
+                dcc.Graph(
+                        id='scatter-plot',
+                        className='ten columns offset-by-one'
+                    ),
+            ],
+            className='row'
+            )
+        ]) # tab2
+    ]) #tabs
 ])
-
 # Internal logic
 last_back = 0
 last_next = 0
@@ -165,48 +250,30 @@ TEXTS = {
     '''.replace('  ', ''),
     1: '''
     #### Where we stand
-    On Wednesday, both short-term and long-term rates were lower than they have
-    been for most of history – a reflection of the continuing hangover
-    from the financial crisis.
+    1
     >>
-    The yield curve is fairly flat, which is a sign that investors expect
-    mediocre growth in the years ahead.
+    2
     '''.replace('  ', ''),
     2: '''
     #### Deep in the valley
-    In response to the last recession, the Federal Reserve has kept short-term
-    rates very low — near zero — since 2008. (Lower interest rates stimulate
-    the economy, by making it cheaper for people to borrow money, but also
-    spark inflation.)
+    1
     >>
-    Now, the Fed is getting ready to raise rates again, possibly as early as
-    June.
+    1
     '''.replace('  ', ''),
     3: '''
     #### Last time, a puzzle
-    The last time the Fed started raising rates was in 2004. From 2004 to 2006,
-    short-term rates rose steadily.
+    3
     >>
-    But long-term rates didn't rise very much.
-    >>
-    The Federal Reserve chairman called this phenomenon a “conundrum," and it
-    raised questions about the ability of the Fed to guide the economy.
-    Part of the reason long-term rates failed to rise was because of strong
-    foreign demand.
+    4
     '''.replace('  ', ''),
     4: '''
     #### Long-term rates are low now, too
-    Foreign buyers have helped keep long-term rates low recently, too — as have
-    new rules encouraging banks to hold government debt and expectations that
-    economic growth could be weak for a long time.
+    5
     >>
-    The 10-year Treasury yield was as low as it has ever been in July 2012 and
-    has risen only modestly since.
-    Some economists refer to the economic pessimism as “the new normal.”
+    6
     '''.replace('  ', ''),
     5: '''
-    #### Long-term rates are low now, too
-    Here is the same chart viewed from above.
+    #### 7
     '''.replace('  ', '')
 }
 
@@ -229,20 +296,18 @@ def make_graph(value):
         value = 0
 
     if value in range(0, 5):
-
-        trace1 = dict(
-            type="surface",
+        trace1 = go.Surface(
             x=xlist,
             y=ylist,
             z=np.array(zlist),
             hoverinfo='x+y+z',
-            lighting={
-                "ambient": 0.95,
-                "diffuse": 0.99,
-                "fresnel": 0.01,
-                "roughness": 0.01,
-                "specular": 0.01,
-            },
+            lighting=dict(
+                ambient=0.95,
+                diffuse=0.99,
+                fresnel=0.01,
+                roughness=0.01,
+                specular=0.01,
+            ),
             colorscale='Viridis',
             opacity=0.8,
         )
@@ -250,53 +315,72 @@ def make_graph(value):
         data = [trace1]
 
         layout = go.Layout(
-        title='SO coffe',
-        autosize=True,
-        font=dict(
-            size=12,
-            color="#CCCCCC",
-        ),
-        margin=dict(
-            t=30,
-            l=50,
-            b=30,
-            r=50,
-        ),
-        showlegend=False,
-        hovermode='closest',
-        scene=dict(
-            aspectmode="manual",
-            aspectratio=dict(x=2, y=5, z=1.5),
-            camera=dict(
-                up=UPS[value],
-                center=CENTERS[value],
-                eye=EYES[value]
+            title='SO coffe',
+            autosize=True,
+            font=dict(
+                size=12,
+                color='#090B11',
             ),
-        ),
-        xaxis={
-            "showgrid": True,
-            "title": "",
-            #"type": "category",
-            "zeroline": False,
-            #"categoryorder": 'array',
-            #"categoryarray": list(reversed(xlist))
-        },
-        yaxis={
-            "showgrid": True,
-            "title": "",
-            #"type": "date",
-            "zeroline": False,
-        },
-        #transition={
-        #        'duration': 500,
-        #        'easing': 'cubic-in-out'
-        #},
-    )
-
+            margin=dict(
+                t=30,
+                l=50,
+                b=30,
+                r=50,
+            ),
+            showlegend=False,
+            hovermode='closest',
+            scene=dict(
+                aspectmode="manual",
+                aspectratio=dict(x=2, y=5, z=1.5),
+                camera=dict(
+                    up=UPS[value],
+                    center=CENTERS[value],
+                    eye=EYES[value]
+                ),
+                xaxis=dict(
+                    backgroundcolor="#efefef",
+                    showbackground=True,
+                    title="",
+                    showgrid=True,
+                    zeroline=True,
+                    tickvals=[0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22],
+                    ticktext=['0:00', '2:00', '4:00', '6:00', '8:00', '10:00',
+                              '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+                    tickfont=dict(
+                        color='#090B11',
+                        size=12,
+                        family='Old Standard TT, serif',
+                    ),
+                    nticks=12,
+                ),
+                yaxis=dict(
+                    backgroundcolor="#efefef",
+                    showbackground=True,
+                    showgrid=True,
+                    title="",
+                    tickfont=dict(
+                        color='#090B11',
+                        size=12,
+                        family='Old Standard TT, serif',
+                    ),
+                    zeroline=False,
+                ),
+                zaxis=dict(
+                    backgroundcolor="#efefef",
+                    showbackground=True,
+                    title="",
+                    nticks=7,
+                    tickvals=[0, 100, 500, 1000, 2000, 3000, 4000],
+                    tickfont=dict(
+                        color='#090B11',
+                        size=12,
+                        family='Old Standard TT, serif',
+                    ),
+                ),
+            ),
+        )
     else:
-
-        trace1 = dict(
-            type="heatmap",
+        trace1 = go.Heatmap(
             zsmooth='best',
             x=ylist,
             y=xlist,
@@ -304,10 +388,8 @@ def make_graph(value):
             colorscale='Viridis',
             name='yaxis1 data',
             yaxis='y1',
-            #opacity=1
         )
-        trace2 = dict(
-            type='scatter',
+        trace2 = go.Scatter(
             x=ylist,
             y=z_prec,
             name='yaxis2 data',
@@ -318,8 +400,7 @@ def make_graph(value):
             ),
             showlegend=False
         )
-        trace3 = dict(
-            type='scatter',
+        trace3 = go.Scatter(
             x=ylist,
             y=z_temps,
             name='yaxis3 data',
@@ -333,30 +414,39 @@ def make_graph(value):
 
         data = [trace1, trace2, trace3]
 
-
         layout = go.Layout(
             title='Double Y Axis Example',
-    yaxis=dict(
-       
-    ),
-    yaxis2=dict(
-        overlaying='y',
-        side='left',
-        range=[0.0,5],
-        ticks='',
-        showticklabels=False
-    ),
-    yaxis3=dict(
-        overlaying='y',
-        side='right',
-        range=[8.0, 150],
-        ticks='',
-        showticklabels=False
-    )
+            xaxis=dict(
+                tickfont=dict(
+                        color='#090B11',
+                        size=12,
+                        family='Old Standard TT, serif',
+                    ),
+            ),
+            yaxis=dict(
+                tickfont=dict(
+                        color='#090B11',
+                        size=12,
+                        family='Old Standard TT, serif',
+                    ),
+            ),
+            yaxis2=dict(
+                overlaying='y',
+                side='left',
+                range=[0.0,5],
+                ticks='',
+                showticklabels=False
+            ),
+            yaxis3=dict(
+                overlaying='y',
+                side='right',
+                range=[8.0, 150],
+                ticks='',
+                showticklabels=False
+            )
         )
 
-    figure = dict(data=data, layout=layout)
-     #py.iplot(figure)
+    figure = go.Figure(data=data, layout=layout)
     return figure
 
 
