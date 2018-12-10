@@ -85,137 +85,151 @@ app.layout = html.Div([
     html.Div([
         dcc.Markdown(
             '''
-            ### A simple 3-D analysis of pedestrian traffic on Brooklyn Bridge.
+            ### A simple analysis of pedestrian traffic on Brooklyn Bridge.
             '''.replace('  ', ''),
             className='eight columns offset-by-two'
         )
     ],
     className='row'
     ),
-    dcc.Tabs(id="tabs", children=[
-        dcc.Tab(label='Tab one', children=[
-            html.Div([
-                dcc.Markdown(
-                    '''
-                    ### Title
-                    '''.replace('  ', ''),
-                    className='eight columns offset-by-two'
-                )
-            ],
-            className='row',
-            style={'text-align': 'center', 'margin-bottom': '15px',
-                'margin-top': '20px'}
-            ),
-            html.Div([
-                html.Div([
-                    dcc.Slider(
-                        min=0,
-                        max=5,
-                        value=0,
-                        marks={i: ''.format(i + 1) for i in range(6)},
-                        id='slider',
-                        included=False,
-                        className='one column offset-by-five'
-                    ),
-                ],
-                className='row',
-                style={'margin-bottom': '10px'}
-                ),
-                html.Div([
+    dcc.Tabs(
+        id="tabs",
+        parent_className='parent-tabs ten columns offset-by-one',
+        className='custom-tabs-container', 
+        children=[
+            dcc.Tab(
+                label='Tab one',
+                className='custom-tab ', 
+                children=[
                     html.Div([
-                        html.Button('Back', id='back', style={
-                                    'display': 'inline-block'}),
-                        html.Button('Next', id='next', style={
-                                    'display': 'inline-block'})
+                        dcc.Markdown(
+                            '''
+                            ### Title
+                            '''.replace('  ', ''),
+                            className='eight columns offset-by-two'
+                        )
                     ],
-                    className='two columns offset-by-five'
+                    className='row',
+                    style={'text-align': 'center', 'margin-bottom': '35px',
+                        'margin-top': '35px'}
                     ),
-                    dcc.Markdown(
-                        id='text',
-                        className='six columns'
-                    ),
-                ],
-                className='row',
-                style={'margin-bottom': '10px'}
-                ),
-                dcc.Graph(
-                    id='graph',
-                    style={'height': 800}
-                ),
-            ],
-            id='ten columns offset-by-one'
-            ),
-        ]),
-        dcc.Tab(label='Tab two', children=[
-            html.Div([
-                dcc.Markdown(
-                    '''
-                    ### Title
-                    '''.replace('  ', ''),
-                    className='eight columns offset-by-two'
-                )
-            ],
-            className='row',
-            style={'text-align': 'center', 'margin-bottom': '15px',
-                'margin-top': '20px'}
-            ),
-            html.Div([
-                html.Div([
-                    dcc.Dropdown(
-                        id='month-picker',
-                        options=[
-                            {'label': "Oct '17", 'value': 'oct'},
-                            {'label': "Nov '17", 'value': 'nov'},
-                            {'label': "Dec '17", 'value': 'dec'},
-                            {'label': "Jan '18", 'value': 'jan'},
-                            {'label': "Feb '18", 'value': 'feb'},
-                            {'label': "Mar '18", 'value': 'mar'},
-                            {'label': "Apr '18", 'value': 'apr'},
-                            {'label': "May '18", 'value': 'may'},
-                            {'label': "Jun '18", 'value': 'jun'},
-                            {'label': "Jul '18", 'value': 'jul'},
+                    html.Div([
+                        html.Div([
+                            dcc.Slider(
+                                min=0,
+                                max=5,
+                                value=0,
+                                marks={i: ''.format(i + 1) for i in range(6)},
+                                id='slider',
+                                included=False,
+                                className='one column offset-by-five'
+                            ),
                         ],
-                        value='oct',
-                        multi=True,
-                        className='two columns', 
+                        className='row',
+                        style={'margin-bottom': '10px'}
+                        ),
+                    ],
+                    ),
+                    html.Div([
+                        html.Div([
+                            html.Button('Back', id='back', style={
+                                        'display': 'inline-block'}),
+                            html.Button('Next', id='next', style={
+                                        'display': 'inline-block'})
+                        ],
+                        className='two columns offset-by-five'
+                        ),
+                        dcc.Markdown(
+                            id='text',
+                            className='six columns'
+                        ),
+                    ],
+                    className='row',
+                    style={'margin-bottom': '10px'}
                     ),
                     dcc.Graph(
-                        id='example-graph-1',
-                        figure={
-                            'data': [
-                                {'x': [1, 2, 3], 'y': [1, 4, 1],
-                                    'type': 'bar', 'name': 'SF'},
-                                {'x': [1, 2, 3], 'y': [1, 2, 3],
-                                    'type': 'bar', 'name': u'Montréal'},
-                            ]
-                        },
-                        className='six columns',
-                    ),
-                    dcc.Graph(
-                        id='radar-chart',
-                        className='six columns offset-by-six'
+                        id='graph',
+                        style={'height': 700}
                     ),
                 ],
-                className='row'
-                )
-            ]),
-            html.Div([
-                dcc.Graph(
-                        id='scatter-plot',
-                        className='ten columns offset-by-one'
+            ),
+            dcc.Tab(
+                label='Tab two',
+                className='custom-tab', 
+                children=[
+                    html.Div([
+                        dcc.Markdown(
+                            '''
+                            ### Title
+                            '''.replace('  ', ''),
+                            className='eight columns offset-by-two'
+                        )
+                    ],
+                    className='row',
+                    style={'text-align': 'center', 'margin-bottom': '15px',
+                        'margin-top': '20px'}
                     ),
-            ],
-            className='row'
-            )
-        ]) # tab2
-    ]) #tabs
+                    html.Div([
+                        html.Div([
+                            dcc.Dropdown(
+                                id='month-picker',
+                                options=[
+                                    {'label': "Oct '17", 'value': 'oct'},
+                                    {'label': "Nov '17", 'value': 'nov'},
+                                    {'label': "Dec '17", 'value': 'dec'},
+                                    {'label': "Jan '18", 'value': 'jan'},
+                                    {'label': "Feb '18", 'value': 'feb'},
+                                    {'label': "Mar '18", 'value': 'mar'},
+                                    {'label': "Apr '18", 'value': 'apr'},
+                                    {'label': "May '18", 'value': 'may'},
+                                    {'label': "Jun '18", 'value': 'jun'},
+                                    {'label': "Jul '18", 'value': 'jul'},
+                                ],
+                                value='oct',
+                                multi=True,
+                                className='two columns', 
+                            ),
+                            dcc.Graph(
+                                id='example-graph-1',
+                                figure={
+                                    'data': [
+                                        {'x': [1, 2, 3], 'y': [1, 4, 1],
+                                            'type': 'bar', 'name': 'SF'},
+                                        {'x': [1, 2, 3], 'y': [1, 2, 3],
+                                            'type': 'bar', 'name': u'Montréal'},
+                                    ]
+                                },
+                                className='six columns',
+                            ),
+                            dcc.Graph(
+                                id='radar-chart',
+                                className='six columns offset-by-six'
+                            ),
+                        ],
+                        className='row'
+                        )
+                    ]),
+                    html.Div([
+                        dcc.Graph(
+                                id='scatter-plot',
+                                className='twelve columns'
+                            ),
+                    ],
+                    className='row'
+                    )
+                ]  
+            ),
+        ]
+    ),
+    html.Div(id='tabs-content-classes')
 ])
+
 # Internal logic
 last_back = 0
 last_next = 0
 
 UPS = {
-    0: dict(x=0, y=0, z=1),
+    0: dict(x=1, y=0, z=1),
     1: dict(x=0, y=0, z=1),
     2: dict(x=0, y=0, z=1),
     3: dict(x=0, y=0, z=1),
@@ -302,19 +316,20 @@ def make_graph(value):
             z=np.array(zlist),
             hoverinfo='x+y+z',
             lighting=dict(
-                ambient=0.95,
-                diffuse=0.99,
-                fresnel=0.01,
-                roughness=0.01,
-                specular=0.01,
+                ambient=0.95, 
+                diffuse=0.95, 
+                roughness = 0.01, 
+                specular=0, 
+                fresnel=0.02,
             ),
             colorscale='Viridis',
-            opacity=0.8,
+            opacity=1.0,
         )
 
         data = [trace1]
 
         layout = go.Layout(
+            paper_bgcolor="#efefef",
             title='SO coffe',
             autosize=True,
             font=dict(
@@ -331,7 +346,7 @@ def make_graph(value):
             hovermode='closest',
             scene=dict(
                 aspectmode="manual",
-                aspectratio=dict(x=2, y=5, z=1.5),
+                aspectratio=dict(x=2.5, y=5, z=1.5),
                 camera=dict(
                     up=UPS[value],
                     center=CENTERS[value],
@@ -352,22 +367,29 @@ def make_graph(value):
                         family='Old Standard TT, serif',
                     ),
                     nticks=12,
+                    autorange='reversed',
+                    zerolinecolor='black', #change
+                    zerolinewidth=4, #change
                 ),
                 yaxis=dict(
                     backgroundcolor="#efefef",
                     showbackground=True,
-                    showgrid=True,
+                    showgrid=False,
                     title="",
                     tickfont=dict(
                         color='#090B11',
                         size=12,
                         family='Old Standard TT, serif',
                     ),
-                    zeroline=False,
+                    zeroline=True,
+                    zerolinecolor='black', #change
+                    zerolinewidth=4, #change
+
                 ),
                 zaxis=dict(
                     backgroundcolor="#efefef",
                     showbackground=True,
+                    showgrid=True,
                     title="",
                     nticks=7,
                     tickvals=[0, 100, 500, 1000, 2000, 3000, 4000],
@@ -416,6 +438,7 @@ def make_graph(value):
 
         layout = go.Layout(
             title='Double Y Axis Example',
+            paper_bgcolor="#efefef",
             xaxis=dict(
                 tickfont=dict(
                         color='#090B11',
