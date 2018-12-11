@@ -83,54 +83,48 @@ z_prec = pivot_precipitation()
 
 app.layout = html.Div([
     html.Div([
-        dcc.Markdown(
-            '''
-            ### A simple analysis of pedestrian traffic on Brooklyn Bridge.
-            '''.replace('  ', ''),
-            className='eight columns offset-by-two'
+        html.H2('A simple analysis of pedestrian traffic on Brooklyn Bridge.',
+            style = {'font-family': 'Montserrat'},
+            className='title eight columns'
         )
     ],
     className='row'
     ),
     dcc.Tabs(
-        id="tabs",
-        parent_className='parent-tabs ten columns offset-by-one',
-        className='custom-tabs-container', 
+        id="tabs-with-classes",
+        value='tab-1',
+        parent_className='parent-tabs',
+        className='custom-tabs-container ten columns offset-by-one', 
         children=[
             dcc.Tab(
-                label='Tab one',
-                className='custom-tab ', 
+                label='Play',
+                value='tab-1',
+                className='custom-tab',
+                selected_className='custom-tab--selected',
                 children=[
-                    html.Div([
-                        dcc.Markdown(
-                            '''
-                            ### Title
-                            '''.replace('  ', ''),
-                            className='eight columns offset-by-two'
-                        )
-                    ],
-                    className='row',
-                    style={'text-align': 'center', 'margin-bottom': '35px',
-                        'margin-top': '35px'}
-                    ),
                     html.Div([
                         html.Div([
                             dcc.Slider(
                                 min=0,
-                                max=5,
+                                max=4,
                                 value=0,
-                                marks={i: ''.format(i + 1) for i in range(6)},
+                                marks={i: ''.format(i + 1) for i in range(5)},
                                 id='slider',
                                 included=False,
-                                className='one column offset-by-five'
+                                className='slider two columns offset-by-five'
                             ),
                         ],
-                        className='row',
+                        #className='row',
                         style={'margin-bottom': '10px'}
                         ),
+
                     ],
                     ),
                     html.Div([
+                        dcc.Markdown(
+                            id='text',
+                            className='three columns offset-by-one'
+                        ),
                         html.Div([
                             html.Button('Back', id='back', style={
                                         'display': 'inline-block'}),
@@ -139,23 +133,21 @@ app.layout = html.Div([
                         ],
                         className='two columns offset-by-five'
                         ),
-                        dcc.Markdown(
-                            id='text',
-                            className='six columns'
-                        ),
                     ],
                     className='row',
                     style={'margin-bottom': '10px'}
                     ),
                     dcc.Graph(
                         id='graph',
-                        style={'height': 700}
+                        style={'height': 700},
+                        className='ten columns offset-by-one'
                     ),
                 ],
             ),
             dcc.Tab(
-                label='Tab two',
+                label='Explore',
                 className='custom-tab', 
+                selected_className='custom-tab--selected',
                 children=[
                     html.Div([
                         dcc.Markdown(
@@ -234,7 +226,7 @@ UPS = {
     2: dict(x=0, y=0, z=1),
     3: dict(x=0, y=0, z=1),
     4: dict(x=0, y=0, z=1),
-    5: dict(x=0, y=0, z=1),
+    
 }
 
 CENTERS = {
@@ -243,7 +235,7 @@ CENTERS = {
     2: dict(x=0, y=1.1, z=-1.3),
     3: dict(x=0, y=-0.7, z=0),
     4: dict(x=0, y=-0.2, z=0),
-    5: dict(x=-0.11, y=-0.5, z=0),
+    
 }
 
 EYES = {
@@ -252,42 +244,35 @@ EYES = {
     2: dict(x=1.3, y=3, z=0),
     3: dict(x=2.6, y=-1.6, z=0),
     4: dict(x=3, y=-0.2, z=0),
-    5: dict(x=-0.1, y=-0.5, z=2.66)
+    
 }
 
 TEXTS = {
     0: '''
-    #### test
-    The 
-    >>
-     now.
+    ##### INTRO
+    This raph shows the total number of pedestrians visiting Brooklyn Brigde over 9 months. 
+    Measurements started from october '17. Data covers the range until July '18.
     '''.replace('  ', ''),
     1: '''
-    #### Where we stand
-    1
-    >>
-    2
+    ##### INTRO 2
+    The chart shows the changing numbers of pedestrians depending on the time of day,
+    seasons or day of the week.
     '''.replace('  ', ''),
     2: '''
-    #### Deep in the valley
-    1
-    >>
-    1
+    ##### EVENTS
+    Particular attention is paid to the values that stand out clearly against the
+    background of the immediate environment. We can count New Year's Eve together
+    with the New Year.
     '''.replace('  ', ''),
     3: '''
-    #### Last time, a puzzle
-    3
-    >>
-    4
+    ##### SEASONAL FLUCTUATIONS
+    Statistically the highest pedestrian traffic volume is visible in the case of
+    good, stable weather in warmer months.
     '''.replace('  ', ''),
     4: '''
-    #### Long-term rates are low now, too
-    5
-    >>
-    6
-    '''.replace('  ', ''),
-    5: '''
-    #### 7
+    ##### WEATHER IMPACT
+    In this graph you can see the impact of the weather and especially its rapid changes
+    on the number of Brooklyn Bridge visitors.
     '''.replace('  ', '')
 }
 
@@ -297,7 +282,6 @@ ANNOTATIONS = {
     2: [],
     3: [],
     4: [],
-    5: [],
 }
 
 
@@ -309,7 +293,7 @@ def make_graph(value):
     if value is None:
         value = 0
 
-    if value in range(0, 5):
+    if value in range(0, 4):
         trace1 = go.Surface(
             x=xlist,
             y=ylist,
@@ -330,7 +314,7 @@ def make_graph(value):
 
         layout = go.Layout(
             paper_bgcolor="#efefef",
-            title='SO coffe',
+            title='Brooklyn Brodge pedestrians - 3-D view.',
             autosize=True,
             font=dict(
                 size=12,
@@ -438,19 +422,24 @@ def make_graph(value):
 
         layout = go.Layout(
             title='Double Y Axis Example',
+            titlefont=dict(
+                color='#090B11',
+                family='Montserrat, bold',
+                size=18,
+            ),
             paper_bgcolor="#efefef",
             xaxis=dict(
                 tickfont=dict(
                         color='#090B11',
                         size=12,
-                        family='Old Standard TT, serif',
+                        family='Raleway, regular',
                     ),
             ),
             yaxis=dict(
                 tickfont=dict(
                         color='#090B11',
                         size=12,
-                        family='Old Standard TT, serif',
+                        family='Raleway',
                     ),
             ),
             yaxis2=dict(
@@ -504,6 +493,12 @@ def advance_slider(back, nxt, slider):
         last_next = nxt
         return min(5, slider + 1)
 
+external_css = [
+    "//fonts.googleapis.com/css?family=Montserrat|Raleway:Regular",
+]
+
+for css in external_css:
+    app.css.append_css({"external_url": css})
 
 # Run the Dash app
 if __name__ == '__main__':

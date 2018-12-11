@@ -6,5 +6,56 @@ body {
 /* TABS */
 
 .custom-tabs {
-    height: '34px';
+    border-top-left-radius: 3px;
+    background-color: #472d2d;
+    padding: 0px 24px;
+    border-bottom: 1px solid #d6d6d6;
 }
+
+.custom-tab {
+    color:#586069;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-top: 3px solid transparent !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-bottom: 0px !important;
+    background-color: #5c80a5;
+    padding: 12px !important;
+    font-family: "system-ui";
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.custom-tab--selected {
+    color: rgb(151, 58, 58);
+    box-shadow: 1px 1px 0px white;
+    border-left: 1px solid lightgrey !important;
+    border-right: 1px solid lightgrey !important;
+    border-top: 3px solid #4b392d !important;
+}
+
+/* SLIDER */
+
+.graphSlider .rc-slider{
+    margin-top: 0px;
+    position: relative;
+    bottom: 20px;
+    height: 14px;
+    padding: 0;
+    width: 100%;
+    border-radius: 6px;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(50, 54, 6, 0);
+}
+
+.graphSlider .rc-slider-dot-active{
+    border-color: #bb1f1f;
+    color: rgb(175, 13, 13);
+  }
+
+  /* TITLE */
+  .title {
+      margin-top: 20px;
+      margin-bottom: 15px;
+  }
